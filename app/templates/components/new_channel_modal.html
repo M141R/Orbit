@@ -1,0 +1,36 @@
+<div class="modal-backdrop">
+  <div class="modal-content">
+    <div class="modal-header">
+      <p>Create New Channel</p>
+      <!-- <button
+        class="close-btn"
+        onclick="document.getElementById('modal-container').innerHTML = ''"
+      >
+        X
+      </button> -->
+    </div>
+    <form
+      action="{{ url_for('main.new_channel', group_id=group_id) }}"
+      method="post"
+      class="modal-form"
+    >
+      <p>CHANNEL NAME</p>
+      <input
+        type="text"
+        name="channelname"
+        placeholder="new-channel"
+        required
+      />
+
+      <div class="modal-btns">
+        <button
+          type="button"
+          onclick="document.getElementById('modal-container').innerHTML = ''"
+        >
+          Cancel
+        </button>
+        <button type="submit" class="primary-btn">Create Channel</button>
+      </div>
+    </form>
+  </div>
+</div>

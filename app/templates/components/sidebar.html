@@ -1,0 +1,31 @@
+<div class="sidebar">
+  <div class="stations">
+    <a href="{{ url_for('main.home') }}" class="global-home">
+      <img src="{{url_for('static', filename='Logo.svg')}}" alt="Logo" />
+    </a>
+    {% if current_user.is_authenticated %}
+    <div class="stations">
+      {% for group in my_groups %}
+      <a
+        href="{{ url_for('main.group', group_slug=group.slug) }}"
+        class="station-icon"
+        title="{{ group.name }}"
+      >
+        {{ group.name[0] | upper }}
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <button
+      hx-get="{{url_for('main.new_group_modal')}}"
+      hx-target="#modal-container"
+    >
+      <img src="{{url_for('static', filename='Plus.svg')}}" alt="" />
+    </button>
+  </div>
+  <div class="user-avatar">
+    <a href="{{url_for('main.profile')}}">
+      <img src="{{current_user.avatar}}" alt="User Avatar" />
+    </a>
+  </div>
+</div>

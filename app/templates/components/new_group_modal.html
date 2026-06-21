@@ -1,0 +1,32 @@
+<div class="modal-backdrop">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Launch New Station</h2>
+      <!-- <button
+        class="close-btn"
+        onclick="document.getElementById('modal-container').innerHTML = ''"
+      >
+        X 
+      </button> -->
+    </div>
+    <form
+      class="modal-form"
+      action="{{ url_for('main.new_group')}}"
+      method="post"
+    >
+      <p>Station Name</p>
+      <input type="text" name="Name" placeholder="new-station" required />
+      <input type="text" name="Desc" placeholder="new station desc" />
+
+      <div class="modal-btns">
+        <button
+          type="button"
+          onclick="document.getElementById('modal-container').innerHTML = ''"
+        >
+          Cancel
+        </button>
+        <button class="primary-btn" type="submit">Create Group</button>
+      </div>
+    </form>
+  </div>
+</div>

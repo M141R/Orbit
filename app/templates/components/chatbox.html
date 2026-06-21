@@ -1,0 +1,72 @@
+<div class="channel-info">
+  <p># {{ channel.name }}</p>
+</div>
+
+<div id="message-container">
+  {% for message in messages %}
+  <div class="message-bubble">
+    <img src="{{message.sender.avatar}}" class="user-avatar" alt="Avatar" />
+    <div>
+      <span style="font-weight: bold; color: white"
+        >{{message.sender.username}}</span
+      >
+      <span style="font-size: 0.8rem; color: #cbd0da"
+        >{{ message.timestamp.strftime('%I:%M %p') }}</span
+      >
+      <p style="margin: 5px 0 0 0; color: #dee3ed">{{ message.content }}</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<form id="chat-form" onsubmit="event.preventDefault()">
+  <textarea
+    rows="1"
+    placeholder="Write your message"
+    id="chat-message"
+  ></textarea>
+  <button class="send-button">
+    <img src="{{url_for('static', filename='send.svg')}}" alt="" />
+  </button>
+</form>
+
+<script type="text/javascript">
+  if (window.currentRoom) {
+    socket.emit("leave_channel", { channel_id: window.currentRoom });
+  }
+
+  window.currentRoom = "{{ channel.channel_id }}";
+  socket.emit("join_channel", { channel_id: window.currentRoom });
+
+  var form = document.getElementById("chat-form");
+  var input = document.getElementById("chat-message");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (input.value.trim() !== "") {
+      socket.emit("send_message", {
+        message: input.value,
+        channel_id: window.currentRoom,
+      });
+      input.value = "";
+    }
+  });
+
+  socket.off("receive_message");
+
+  socket.on("receive_message", function (data) {
+    var messageContainer = document.getElementById("message-container");
+    var newMessage = document.createElement("div");
+    newMessage.className = "message-bubble";
+    newMessage.innerHTML = `
+        <img src="${data.avatar}" class="user-avatar" alt="Avatar" />
+        <div>
+            <span style="font-weight: bold; color: white;">${data.user}</span>
+            <span style="font-size: 0.8rem; color: #191c22;">${data.timestamp}</span>
+            <p style="margin: 5px 0 0 0; color: #dee3ed;">${data.content}</p>
+        </div>
+  `;
+
+    messageContainer.appendChild(newMessage);
+  });
+</script>

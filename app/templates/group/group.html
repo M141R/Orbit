@@ -1,0 +1,43 @@
+{% extends 'base.html' %} {% block content %}
+<!-- <h1>{{group.name}}</h1>
+     
+     <form action="/group/{{ group.group_id }}/new-channel" method="post">
+        <input type="text" name="channelname" id="" placeholder="Channel Name">
+        <button type="submit">Create Channel</button>
+     </form>
+     <div id="chat-box"></div> -->
+<div class="station-content">
+  <div class="station-info">
+    <p>{{group.name}}</p>
+    <div class="channels">
+      <p>Channels</p>
+      {% for channel in channels %}
+      <button
+        hx-get="{{url_for('main.channel', channel_slug=channel.slug, group_slug=group.slug)}}"
+        hx-target="#chat-box"
+        hx-swap="innerHTML"
+        class="channel-name"
+      >
+        # {{channel.name}}
+      </button>
+      {% endfor %}
+      <button
+        hx-get="{{url_for('main.new_channel_modal', group_id=group.group_id)}}"
+        hx-target="#modal-container"
+        class="add-channel-button"
+      >
+        <img src="{{url_for('static', filename='Plus.svg')}}" alt="" /> Add
+        channels
+      </button>
+    </div>
+  </div>
+  <div class="chat" id="chat-box">
+    {% if active_channel %} {% include 'components/chatbox.html' %} {% else %}
+    <div style="margin: auto; text-align: center; color: #eae6df">
+      <h2>Welcome to {{ group.name }}!</h2>
+      <p>Select a channel on the left to start transmitting.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

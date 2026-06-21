@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Group admin page</h1>
+{% for req in requests %}
+<p>{{req.user.username }} requested to join at {{req.timestamp}} </p>
+<form action="{{url_for('main.access', group_slug=group.slug)}}" method="post">
+    <input type="text" name="requested_username" value="{{req.user.username}}" readonly>
+    <input type="hidden" name="access_id" value="{{req.access_id}}">
+    <button type="submit" name="action" value="approve">Approve</button>
+    <button type="submit" name="action" value="deny">Deny</button>
+</form>
+{% endfor %}
+{% endblock %}
